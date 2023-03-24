@@ -3615,13 +3615,13 @@ SWITCH_DECLARE(switch_status_t) switch_img_scale(switch_image_t *src, switch_ima
 				kFilterBox);
 	}
 
+	if (destP) {
+		*destP = dest;
+	}
+
 	if (ret != 0) {
 		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Scaling Error: ret: %d\n", ret);
 		return SWITCH_STATUS_FALSE;
-	}
-
-	if (destP) {
-		*destP = dest;
 	}
 
 	return SWITCH_STATUS_SUCCESS;
