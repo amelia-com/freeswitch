@@ -2427,6 +2427,7 @@ SWITCH_STANDARD_APP(speak_function)
 	char *text = NULL;
 	char *mydata = NULL;
 	switch_input_args_t args = { 0 };
+	switch_status_t status;
 
 	if (zstr(data) || !(mydata = switch_core_session_strdup(session, data))) {
 		switch_log_printf(SWITCH_CHANNEL_SESSION_LOG(session), SWITCH_LOG_ERROR, "Invalid Params!\n");
@@ -2477,7 +2478,19 @@ SWITCH_STANDARD_APP(speak_function)
 
 	switch_channel_set_variable(channel, SWITCH_PLAYBACK_TERMINATOR_USED, "");
 
-	switch_ivr_speak_text(session, engine, voice, text, &args);
+	status = switch_ivr_speak_text(session, engine, voice, text, &args);
+
+    	switch (status) {
+            case SWITCH_STATUS_SUCCESS:
+                    switch_channel_set_variable(channel, SWITCH_CURRENT_APPLICATION_RESPONSE_VARIABLE, "SUCCESS");
+                    break;
+            case SWITCH_STATUS_BREAK:
+                    switch_channel_set_variable(channel, SWITCH_CURRENT_APPLICATION_RESPONSE_VARIABLE, "BREAK");
+                    break;
+            default:
+                    switch_channel_set_variable(channel, SWITCH_CURRENT_APPLICATION_RESPONSE_VARIABLE, "TTS ERROR");
+                    break;
+            }
 }
 
 struct att_keys {

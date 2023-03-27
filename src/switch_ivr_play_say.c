@@ -2827,7 +2827,13 @@ SWITCH_DECLARE(switch_status_t) switch_ivr_speak_text_handle(switch_core_session
 		text = tmp;
 	}
 
-	switch_core_speech_feed_tts(sh, text, &flags);
+	status = switch_core_speech_feed_tts(sh, text, &flags);
+    	if (status != SWITCH_STATUS_SUCCESS) {
+    		switch_log_printf(SWITCH_CHANNEL_SESSION_LOG(session), SWITCH_LOG_ERROR, "Synthesis failure\n");
+    		switch_safe_free(tmp);
+    		text = NULL;
+    		goto done;
+    	}
 	switch_log_printf(SWITCH_CHANNEL_SESSION_LOG(session), SWITCH_LOG_DEBUG, "Speaking text: %s\n", text);
 	switch_safe_free(tmp);
 	text = NULL;

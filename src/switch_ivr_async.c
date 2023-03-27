@@ -5293,9 +5293,18 @@ SWITCH_DECLARE(switch_status_t) switch_ivr_detect_speech_start_input_timers(swit
 {
 	switch_channel_t *channel = switch_core_session_get_channel(session);
 	struct speech_thread_handle *sth = switch_channel_get_private(channel, SWITCH_SPEECH_KEY);
+	witch_event_t *event;
 
 	if (sth) {
 		switch_core_asr_start_input_timers(sth->ah);
+
+		if (switch_event_create(&event, SWITCH_EVENT_ASR_TIMER_START) == SWITCH_STATUS_SUCCESS) {
+        			if (switch_test_flag(sth->ah, SWITCH_ASR_FLAG_FIRE_EVENTS)) {
+        					switch_channel_event_set_data(channel, event);
+        					switch_event_fire(&event);
+        			}
+        		}
+
 		return SWITCH_STATUS_SUCCESS;
 	}
 	return SWITCH_STATUS_FALSE;

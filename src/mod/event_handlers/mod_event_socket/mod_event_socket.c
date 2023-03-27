@@ -2115,6 +2115,7 @@ static switch_status_t parse_command(listener_t *listener, switch_event_t **even
 			listener->event_list[SWITCH_EVENT_CHANNEL_UNBRIDGE] = 1;
 			listener->event_list[SWITCH_EVENT_CHANNEL_UNPARK] = 1;
 			listener->event_list[SWITCH_EVENT_DETECTED_SPEECH] = 1;
+			listener->event_list[SWITCH_EVENT_ASR_TIMER_START] = 1;
 			listener->event_list[SWITCH_EVENT_DTMF] = 1;
 			listener->event_list[SWITCH_EVENT_NOTALK] = 1;
 			listener->event_list[SWITCH_EVENT_TALK] = 1;
